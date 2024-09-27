@@ -1,0 +1,42 @@
+version: '3'
+services:
+  
+  url_shortener_db:
+    image: mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: url_shortener
+    volumes:
+      - db-data:/var/lib/mysql
+
+  url_shortener_backend:
+    container_name: url_shortener_backend
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_HOST=url_shortener_db
+      - DB_PORT=3306
+      - DB_DATABASE=url_shortener
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+    depends_on:
+      - url_shortener_db
+    volumes:
+      - ./backend:/var/www
+
+  url_shortener_frontend:
+    container_name: url_shortener_frontend
+    build: ./frontend
+    environment:
+      - API_URL=http://localhost:8000/api
+      - APP_URL=http://localhost:3000/
+    depends_on:
+      - url_shortener_backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+  
+volumes:
+  db-data:

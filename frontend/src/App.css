@@ -1,0 +1,14 @@
+.App {
+    margin-top: 50vh;
+    text-align: center;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+body {
+    background-color: #282c34;
+    color: white;
+}
